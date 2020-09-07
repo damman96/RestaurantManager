@@ -2,4 +2,8 @@ package restaurant_manager.infrastructure
 
 import org.springframework.data.repository.CrudRepository
 
-interface OrderDAO : CrudRepository<Order, Long>
+interface OrderDAO : CrudRepository<Order, Long> {
+
+    fun countOrdersByEmployeeId(employeeId: Long): Long
+
+}
