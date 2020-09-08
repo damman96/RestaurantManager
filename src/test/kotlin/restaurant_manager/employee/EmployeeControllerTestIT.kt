@@ -60,8 +60,8 @@ internal class EmployeeControllerTestIT(
                 .stream()
                 .map(employeeRepository::mapEmployeeToEmployeeDetailDto)
                 .collect(Collectors.toList())
-        assertEquals(HttpStatus.OK, result.statusCode)
 
+        assertEquals(HttpStatus.OK, result.statusCode)
         assertNotNull(result.body)
         assertEquals(expectedResult.size, result.body!!.size)
     }
