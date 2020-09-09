@@ -21,7 +21,7 @@ import java.util.stream.Collectors
 @TestInstance(PER_CLASS)
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class BoardControllerTestIT(
+class BoardControllerTestIT(
         @Autowired private val restTemplate: TestRestTemplate,
         @Autowired private val boardDAO: BoardDAO,
         @Autowired private val boardRepository: BoardRepository) {
@@ -176,12 +176,14 @@ internal class BoardControllerTestIT(
     }
 
     private val boardAddDto: BoardAddDto
-        get() = BoardAddDto(numberOfSeats = 3,
+        get() = BoardAddDto(
+                numberOfSeats = 3,
                 description = "Stolik trzyosobowy",
                 employeeId = 2L)
 
     private val boardEditDto: BoardEditDto
-        get() = BoardEditDto(numberOfSeats = 3,
+        get() = BoardEditDto(
+                numberOfSeats = 3,
                 description = "Stolik trzyosobowy",
                 employeeId = 2L)
 

@@ -27,9 +27,10 @@ class BoardEditDto {
 
     private fun isValidEmployeeId(): Boolean = Objects.nonNull(employeeId)
 
-    fun isValid(): Boolean = (isValidNumberOfSeats()
-            && isValidDescription()
-            && isValidEmployeeId())
+    fun isValid(): Boolean = (
+            isValidNumberOfSeats()
+                    && isValidDescription()
+                    && isValidEmployeeId())
 
     override fun toString(): String =
             "BoardEditDto(" +

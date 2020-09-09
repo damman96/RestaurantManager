@@ -1,13 +1,12 @@
 package restaurant_manager.infrastructure
 
-import org.hibernate.annotations.ColumnDefault
 import restaurant_manager.others.Amount
 import java.math.BigDecimal
 import javax.persistence.*
 
 @Entity
 @Table(name = "order_details")
-class OrderDetails(
+data class OrderDetails(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
