@@ -2,7 +2,7 @@ package restaurant_manager.enums
 
 import java.util.*
 
-enum class Category(private val category: String) {
+enum class Category(internal val category: String) {
 
     EMPTY("Empty"),
     SOUPS("Soups"),
@@ -12,10 +12,12 @@ enum class Category(private val category: String) {
     APPETIZERS("Appetizers"),
     MAIN_DISHES("Main dishes");
 
-    fun getByValue(value: String): Category {
-        return Arrays.stream(values())
-                .filter { c: Category -> c.category == value }
-                .findFirst()
-                .orElse(EMPTY)
+    companion object {
+        fun getByValue(value: String): Category {
+            return Arrays.stream(values())
+                    .filter { c: Category -> c.category == value }
+                    .findFirst()
+                    .orElse(EMPTY)
+        }
     }
 }

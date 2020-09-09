@@ -1,6 +1,5 @@
 package restaurant_manager.infrastructure
 
-import org.hibernate.annotations.ColumnDefault
 import restaurant_manager.enums.Category
 import restaurant_manager.enums.Subcategory
 import restaurant_manager.others.Price
@@ -8,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "products")
-class Product(
+data class Product(
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

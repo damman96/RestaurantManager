@@ -25,7 +25,7 @@ import java.util.stream.Collectors
 @TestInstance(PER_CLASS)
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class EmployeeControllerTestIT(
+class EmployeeControllerTestIT(
         @Autowired private val restTemplate: TestRestTemplate,
         @Autowired private val employeeDAO: EmployeeDAO,
         @Autowired private val employeeRepository: EmployeeRepository) {

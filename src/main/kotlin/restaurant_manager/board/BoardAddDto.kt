@@ -26,9 +26,10 @@ class BoardAddDto {
 
     private fun isValidEmployeeId(): Boolean = Objects.nonNull(employeeId)
 
-    fun isValid(): Boolean = (isValidNumberOfSeats()
-            && isValidDescription()
-            && isValidEmployeeId())
+    fun isValid(): Boolean = (
+            isValidNumberOfSeats()
+                    && isValidDescription()
+                    && isValidEmployeeId())
 
     override fun toString(): String {
         return "BoardAddDto(numberOfSeats=$numberOfSeats, description=$description, employeeId=$employeeId)"
