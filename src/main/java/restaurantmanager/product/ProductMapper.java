@@ -12,4 +12,8 @@ public interface ProductMapper {
 	
 	Product map(ProductDto productDto);
 	
+	ModifyProductDto mapFromModify(Product product);
+	
+	Product mapToModify(ModifyProductDto modifyProductDto);
+	
 }
