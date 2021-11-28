@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,11 +23,12 @@ import lombok.ToString;
 @Setter(value = AccessLevel.PACKAGE)
 @Getter
 @ToString
+@EqualsAndHashCode
 @Table(name = "boards")
 public class Board {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(name = "number_of_seats")
