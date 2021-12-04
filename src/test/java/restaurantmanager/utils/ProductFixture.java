@@ -27,6 +27,17 @@ public abstract class ProductFixture {
 				.build();
 	}
 	
+	public static Product createProductEntity(final Long id, final String category, final String productType) {
+		return Product.builder()
+				.id(id)
+				.name(createRandomString())
+				.category(category)
+				.description(createRandomString())
+				.price(BigDecimal.valueOf(createRandomLong(), SCALE))
+				.productType(productType)
+				.build();
+	}
+	
 	public static ModifyProductDto createModifyProductDtoWithNulls() {
 		return ModifyProductDto.builder().build();
 	}
