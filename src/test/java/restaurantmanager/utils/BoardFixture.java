@@ -1,9 +1,9 @@
-package restaurantmanager;
+package restaurantmanager.utils;
 
 import restaurantmanager.board.Board;
 import restaurantmanager.board.ModifyBoardDto;
 
-public class BoardFixture {
+public abstract class BoardFixture {
 	
 	public static Board createBoardEntityWithNulls() {
 		return Board.builder().build();
