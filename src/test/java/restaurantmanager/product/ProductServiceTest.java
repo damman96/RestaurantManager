@@ -29,22 +29,6 @@ class ProductServiceTest {
 	@Autowired
 	private ProductService productService;
 	
-	private static void assertEquals(final List<Product> productsToAdd, final List<ProductDto> result) {
-		assertThat(result).isNotEmpty();
-		assertThat(result).extracting(ProductDto::getId)
-				.containsAll(productsToAdd.stream().map(Product::getId).collect(toUnmodifiableList()));
-		assertThat(result).extracting(ProductDto::getName)
-				.containsAll(productsToAdd.stream().map(Product::getName).collect(toUnmodifiableList()));
-		assertThat(result).extracting(ProductDto::getCategory)
-				.containsAll(productsToAdd.stream().map(Product::getCategory).collect(toUnmodifiableList()));
-		assertThat(result).extracting(ProductDto::getDescription)
-				.containsAll(productsToAdd.stream().map(Product::getDescription).collect(toUnmodifiableList()));
-		assertThat(result).extracting(ProductDto::getPrice)
-				.containsAll(productsToAdd.stream().map(Product::getPrice).collect(toUnmodifiableList()));
-		assertThat(result).extracting(ProductDto::getProductType)
-				.containsAll(productsToAdd.stream().map(Product::getProductType).collect(toUnmodifiableList()));
-	}
-	
 	@BeforeEach
 	void setUp() {
 		this.productDao.deleteAll();
@@ -69,6 +53,32 @@ class ProductServiceTest {
 		
 		// when
 		final var result = this.productService.getAllProducts();
+		
+		// then
+		assertEquals(productsToAdd, result);
+	}
+	
+	@Test
+	void getAllProductsByCategory_Should_ReturnEmptyList_When_EntitiesAreNotPresentInDb() {
+		// when
+		final var result = this.productService.getAllProductsByCategory("notPresentCategory");
+		
+		// then
+		assertThat(result).isEmpty();
+	}
+	
+	@Test
+	void getAllProductsByCategory_Should_ReturnResultList_When_EntitiesArePresentInDb() {
+		// given
+		final var category = "testCategory";
+		final var productType = "testType";
+		final var productsToAdd = List.of(createProductEntity(1L, category, productType),
+										  createProductEntity(2L, category, productType),
+										  createProductEntity(3L, category, productType));
+		this.productDao.saveAll(productsToAdd);
+		
+		// when
+		final var result = this.productService.getAllProductsByCategory(category);
 		
 		// then
 		assertEquals(productsToAdd, result);
@@ -199,5 +209,21 @@ class ProductServiceTest {
 		// then
 		assertThat(throwable).isInstanceOf(NotFoundException.class)
 				.hasMessage("Product with id=" + id + " not found");
+	}
+	
+	private static void assertEquals(final List<Product> productsToAdd, final List<ProductDto> result) {
+		assertThat(result).isNotEmpty();
+		assertThat(result).extracting(ProductDto::getId)
+				.containsAll(productsToAdd.stream().map(Product::getId).collect(toUnmodifiableList()));
+		assertThat(result).extracting(ProductDto::getName)
+				.containsAll(productsToAdd.stream().map(Product::getName).collect(toUnmodifiableList()));
+		assertThat(result).extracting(ProductDto::getCategory)
+				.containsAll(productsToAdd.stream().map(Product::getCategory).collect(toUnmodifiableList()));
+		assertThat(result).extracting(ProductDto::getDescription)
+				.containsAll(productsToAdd.stream().map(Product::getDescription).collect(toUnmodifiableList()));
+		assertThat(result).extracting(ProductDto::getPrice)
+				.containsAll(productsToAdd.stream().map(Product::getPrice).collect(toUnmodifiableList()));
+		assertThat(result).extracting(ProductDto::getProductType)
+				.containsAll(productsToAdd.stream().map(Product::getProductType).collect(toUnmodifiableList()));
 	}
 }

@@ -28,6 +28,15 @@ public class ProductService {
 		return products;
 	}
 	
+	List<ProductDto> getAllProductsByCategory(final String category) {
+		final var products = this.productDao.findAllByCategoryIsIgnoreCase(category)
+				.stream()
+				.map(ProductMapper.INSTANCE::map)
+				.collect(toUnmodifiableList());
+		log.info("Received products={} by category={}", products, category);
+		return products;
+	}
+	
 	List<ProductDto> getAllProductsByProductType(final String productType) {
 		final var products = this.productDao.findAllByProductTypeIsIgnoreCase(productType)
 				.stream()
@@ -51,6 +60,8 @@ public class ProductService {
 	
 	ProductDto updateProduct(final Long id, final ModifyProductDto modifyProductDto) {
 		final var productFromDb = this.getEntityById(id);
+		log.info("Received product={}", productFromDb);
+		
 		final var modifiedProduct = Product.builder()
 				.id(productFromDb.getId())
 				.name(modifyProductDto.getName())
@@ -59,7 +70,10 @@ public class ProductService {
 				.price(modifyProductDto.getPrice())
 				.productType(modifyProductDto.getProductType())
 				.build();
-		return ProductMapper.INSTANCE.map(this.productDao.save(modifiedProduct));
+		
+		final var updatedProduct = ProductMapper.INSTANCE.map(this.productDao.save(modifiedProduct));
+		log.info("Saved updatedProduct={}", updatedProduct);
+		return updatedProduct;
 	}
 	
 	void deleteProductById(final Long id) {
