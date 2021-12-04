@@ -10,6 +10,6 @@ public interface BookingMapper {
 	
 	BookingDto map(Booking booking);
 	
-	Booking map(BookingDto bookingDto);
+	Booking mapToModify(ModifyBookingDto modifyBookingDto);
 	
 }
