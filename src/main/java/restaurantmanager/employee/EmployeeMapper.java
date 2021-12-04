@@ -12,4 +12,6 @@ public interface EmployeeMapper {
 	
 	Employee map(EmployeeDto employeeDto);
 	
+	Employee mapToModify(ModifyEmployeeDto modifyEmployeeDto);
+	
 }
