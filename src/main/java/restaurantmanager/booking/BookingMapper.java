@@ -12,4 +12,6 @@ public interface BookingMapper {
 	
 	Booking map(BookingDto bookingDto);
 	
+	Booking mapToModify(ModifyBookingDto modifyBookingDto);
+	
 }
