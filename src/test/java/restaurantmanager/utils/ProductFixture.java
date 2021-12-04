@@ -1,14 +1,14 @@
-package restaurantmanager;
+package restaurantmanager.utils;
 
-import static restaurantmanager.RandomUtilsFixture.createRandomLong;
-import static restaurantmanager.RandomUtilsFixture.createRandomString;
+import static restaurantmanager.utils.RandomUtilsFixture.createRandomLong;
+import static restaurantmanager.utils.RandomUtilsFixture.createRandomString;
 
 import java.math.BigDecimal;
 
 import restaurantmanager.product.ModifyProductDto;
 import restaurantmanager.product.Product;
 
-public class ProductFixture {
+public abstract class ProductFixture {
 	
 	private static final int SCALE = 2;
 	
@@ -23,22 +23,6 @@ public class ProductFixture {
 				.category(createRandomString())
 				.description(createRandomString())
 				.price(BigDecimal.valueOf(createRandomLong(), SCALE))
-				.productType(productType)
-				.build();
-	}
-	
-	public static Product createProductEntity(final Long id,
-											  final String name,
-											  final String category,
-											  final String description,
-											  final BigDecimal price,
-											  final String productType) {
-		return Product.builder()
-				.id(id)
-				.name(name)
-				.category(category)
-				.description(description)
-				.price(price)
 				.productType(productType)
 				.build();
 	}

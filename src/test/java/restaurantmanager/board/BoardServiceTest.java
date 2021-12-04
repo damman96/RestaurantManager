@@ -3,10 +3,10 @@ package restaurantmanager.board;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static restaurantmanager.BoardFixture.createBoardEntity;
-import static restaurantmanager.BoardFixture.createBoardEntityWithNulls;
-import static restaurantmanager.BoardFixture.createModifyBoardDto;
-import static restaurantmanager.BoardFixture.createModifyBoardDtoWithNulls;
+import static restaurantmanager.utils.BoardFixture.createBoardEntity;
+import static restaurantmanager.utils.BoardFixture.createBoardEntityWithNulls;
+import static restaurantmanager.utils.BoardFixture.createModifyBoardDto;
+import static restaurantmanager.utils.BoardFixture.createModifyBoardDtoWithNulls;
 
 import java.util.List;
 import java.util.Random;
