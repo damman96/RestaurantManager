@@ -141,10 +141,11 @@ class BoardServiceTest {
 		this.boardDao.save(board);
 		
 		// when
-		this.boardService.deleteBoardById(board.getId());
+		final var result = this.boardService.deleteBoardById(board.getId());
 		
 		//then
 		assertThat(this.boardDao.findById(board.getId())).isNotPresent();
+		assertThat(result).isEqualTo(BoardMapper.INSTANCE.map(board));
 	}
 	
 	@Test

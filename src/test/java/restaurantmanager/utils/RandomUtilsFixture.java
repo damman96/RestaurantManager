@@ -1,12 +1,14 @@
 package restaurantmanager.utils;
 
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class RandomUtilsFixture {
 	
+	private static final int BOUND = 999;
+	
 	public static Long createRandomLong() {
-		return new Random().nextLong();
+		return ThreadLocalRandom.current().nextLong(BOUND);
 	}
 	
 	public static String createRandomString() {

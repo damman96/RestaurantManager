@@ -50,10 +50,11 @@ class BoardService {
 		return BoardMapper.INSTANCE.map(this.boardDao.save(modifiedBoard));
 	}
 	
-	void deleteBoardById(final Long id) {
+	BoardDto deleteBoardById(final Long id) {
 		final var removedBoard = this.getBoardById(id);
 		this.boardDao.deleteById(removedBoard.getId());
 		log.info("Removed board={}", removedBoard);
+		return removedBoard;
 	}
 	
 	private Board getEntityFromDb(final Long id) {
