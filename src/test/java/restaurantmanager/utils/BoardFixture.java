@@ -9,6 +9,12 @@ public abstract class BoardFixture {
 		return Board.builder().build();
 	}
 	
+	public static Board createBoardEntityWithNulls(final Long id) {
+		return Board.builder()
+				.id(id)
+				.build();
+	}
+	
 	public static Board createBoardEntity(final Long id, final Long numberOfSeats, final String boardDescription) {
 		return Board.builder()
 				.id(id)
