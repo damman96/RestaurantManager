@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import static restaurantmanager.utils.ProductFixture.createModifyProductDto;
 import static restaurantmanager.utils.ProductFixture.createModifyProductDtoWithNulls;
 import static restaurantmanager.utils.ProductFixture.createProductEntity;
-import static restaurantmanager.utils.ProductFixture.createProductWithNulls;
+import static restaurantmanager.utils.ProductFixture.createProductEntityWithNulls;
 
 import java.util.List;
 import java.util.Random;
@@ -188,7 +188,7 @@ class ProductServiceTest {
 	@Test
 	void deleteProductById_Should_RemoveEntity_When_EntityExists() {
 		// given
-		final var product = createProductWithNulls();
+		final var product = createProductEntityWithNulls();
 		this.productDao.save(product);
 		
 		// when
