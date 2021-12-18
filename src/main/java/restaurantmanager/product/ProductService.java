@@ -76,10 +76,11 @@ public class ProductService {
 		return updatedProduct;
 	}
 	
-	void deleteProductById(final Long id) {
+	ProductDto deleteProductById(final Long id) {
 		final var removedProduct = this.getProductById(id);
 		this.productDao.deleteById(removedProduct.getId());
 		log.info("Removed product={}", removedProduct);
+		return removedProduct;
 	}
 	
 	private Product getEntityById(final Long id) {

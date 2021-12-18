@@ -12,7 +12,7 @@ public abstract class ProductFixture {
 	
 	private static final int SCALE = 2;
 	
-	public static Product createProductWithNulls() {
+	public static Product createProductEntityWithNulls() {
 		return Product.builder().build();
 	}
 	
