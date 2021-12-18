@@ -4,7 +4,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static restaurantmanager.utils.BookingFixture.createBookingEntity;
-import static restaurantmanager.utils.BookingFixture.createBookingWithNulls;
+import static restaurantmanager.utils.BookingFixture.createBookingEntityWithNulls;
 import static restaurantmanager.utils.BookingFixture.createModifyBookingDto;
 import static restaurantmanager.utils.BookingFixture.createModifyBookingDtoWithNulls;
 
@@ -162,7 +162,7 @@ class BookingServiceTest {
 	@Test
 	void deleteBookingById_Should_RemoveEntity_When_EntityExists() {
 		// given
-		final var booking = createBookingWithNulls();
+		final var booking = createBookingEntityWithNulls();
 		this.bookingDao.save(booking);
 		
 		// when

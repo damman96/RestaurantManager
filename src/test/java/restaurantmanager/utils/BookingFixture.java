@@ -12,7 +12,7 @@ import restaurantmanager.booking.ModifyBookingDto;
 
 public abstract class BookingFixture {
 	
-	public static Booking createBookingWithNulls() {
+	public static Booking createBookingEntityWithNulls() {
 		return Booking.builder().build();
 	}
 	
