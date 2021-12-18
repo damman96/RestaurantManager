@@ -55,10 +55,11 @@ public class EmployeeService {
 		return EmployeeMapper.INSTANCE.map(this.employeeDao.save(modifiedEmployee));
 	}
 	
-	void deleteEmployeeById(final Long id) {
+	EmployeeDto deleteEmployeeById(final Long id) {
 		final var removedEmployee = this.getEmployeeById(id);
 		this.employeeDao.deleteById(removedEmployee.getId());
 		log.info("Removed employee={}", removedEmployee);
+		return removedEmployee;
 	}
 	
 	private Employee getEntityFromDb(final Long id) {
