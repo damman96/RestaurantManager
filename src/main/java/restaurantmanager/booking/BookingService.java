@@ -56,10 +56,11 @@ public class BookingService {
 		return BookingMapper.INSTANCE.map(this.bookingDao.save(modifiedBooking));
 	}
 	
-	void deleteBookingById(final Long id) {
+	BookingDto deleteBookingById(final Long id) {
 		final var removedBooking = this.getBookingById(id);
 		this.bookingDao.deleteById(removedBooking.getId());
 		log.info("Removed booking={}", removedBooking);
+		return removedBooking;
 	}
 	
 	private Booking getEntityFromDb(final Long id) {
