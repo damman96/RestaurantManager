@@ -1,4 +1,4 @@
-package restaurantmanager.product;
+package restaurantmanager.employee;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,20 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProductDaoTest {
+class EmployeeDaoTestIT {
 	
 	@Autowired
-	private ProductDao productDao;
+	private EmployeeDao employeeDao;
 	
 	@BeforeEach
 	void setUp() {
-		this.productDao.deleteAll();
+		this.employeeDao.deleteAll();
 	}
 	
 	@Test
 	void findAll_Should_ReturnEmptyResult_When_NoEntitiesArePresentInDb() {
 		// when
-		final var result = this.productDao.findAll();
+		final var result = this.employeeDao.findAll();
 		
 		// then
 		assertThat(result).isEmpty();
@@ -32,28 +32,28 @@ class ProductDaoTest {
 	@Test
 	void save_Should_SaveEntity() {
 		// given
-		final var productToAdd = Product.builder().build();
+		final var employeeToAdd = Employee.builder().build();
 		
 		// when
-		final var result = this.productDao.save(productToAdd);
+		final var result = this.employeeDao.save(employeeToAdd);
 		
 		// then
-		assertThat(result).isEqualTo(productToAdd);
+		assertThat(result).isEqualTo(employeeToAdd);
 	}
 	
 	@Test
 	void findById_Should_ReturnEntity_When_EntityIsPresent() {
 		// given
-		final var productToAdd = Product.builder().build();
-		this.productDao.save(productToAdd);
+		final var employeeToAdd = Employee.builder().build();
+		this.employeeDao.save(employeeToAdd);
 		
 		// when
-		final var result = this.productDao.findById(productToAdd.getId());
+		final var result = this.employeeDao.findById(employeeToAdd.getId());
 		
 		// then
 		assertThat(result)
 				.isPresent()
-				.contains(productToAdd);
+				.contains(employeeToAdd);
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ class ProductDaoTest {
 		// given
 		final var notExistingId = new Random().nextLong();
 		// when
-		final var result = this.productDao.findById(notExistingId);
+		final var result = this.employeeDao.findById(notExistingId);
 		
 		// then
 		assertThat(result)
@@ -71,13 +71,13 @@ class ProductDaoTest {
 	@Test
 	void deleteAll_Should_ReturnEmptyResult_When_AllEntitiesWasRemoved() {
 		// given
-		this.productDao.save(Product.builder().build());
-		this.productDao.save(Product.builder().build());
-		this.productDao.save(Product.builder().build());
+		this.employeeDao.save(Employee.builder().build());
+		this.employeeDao.save(Employee.builder().build());
+		this.employeeDao.save(Employee.builder().build());
 		
 		// when
-		this.productDao.deleteAll();
-		final var result = this.productDao.findAll();
+		this.employeeDao.deleteAll();
+		final var result = this.employeeDao.findAll();
 		
 		// then
 		assertThat(result).isEmpty();
