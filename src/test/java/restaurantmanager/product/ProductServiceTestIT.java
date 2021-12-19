@@ -21,7 +21,7 @@ import restaurantmanager.NotFoundException;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class ProductServiceTest {
+class ProductServiceTestIT {
 	
 	@Autowired
 	private ProductDao productDao;

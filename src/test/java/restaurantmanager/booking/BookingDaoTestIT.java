@@ -1,4 +1,4 @@
-package restaurantmanager.employee;
+package restaurantmanager.booking;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,20 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EmployeeDaoTest {
+class BookingDaoTestIT {
 	
 	@Autowired
-	private EmployeeDao employeeDao;
+	private BookingDao bookingDao;
 	
 	@BeforeEach
 	void setUp() {
-		this.employeeDao.deleteAll();
+		this.bookingDao.deleteAll();
 	}
 	
 	@Test
 	void findAll_Should_ReturnEmptyResult_When_NoEntitiesArePresentInDb() {
 		// when
-		final var result = this.employeeDao.findAll();
+		final var result = this.bookingDao.findAll();
 		
 		// then
 		assertThat(result).isEmpty();
@@ -32,28 +32,28 @@ class EmployeeDaoTest {
 	@Test
 	void save_Should_SaveEntity() {
 		// given
-		final var employeeToAdd = Employee.builder().build();
+		final var bookingToAdd = Booking.builder().build();
 		
 		// when
-		final var result = this.employeeDao.save(employeeToAdd);
+		final var result = this.bookingDao.save(bookingToAdd);
 		
 		// then
-		assertThat(result).isEqualTo(employeeToAdd);
+		assertThat(result).isEqualTo(bookingToAdd);
 	}
 	
 	@Test
 	void findById_Should_ReturnEntity_When_EntityIsPresent() {
 		// given
-		final var employeeToAdd = Employee.builder().build();
-		this.employeeDao.save(employeeToAdd);
+		final var bookingToAdd = Booking.builder().build();
+		this.bookingDao.save(bookingToAdd);
 		
 		// when
-		final var result = this.employeeDao.findById(employeeToAdd.getId());
+		final var result = this.bookingDao.findById(bookingToAdd.getId());
 		
 		// then
 		assertThat(result)
 				.isPresent()
-				.contains(employeeToAdd);
+				.contains(bookingToAdd);
 	}
 	
 	@Test
@@ -61,7 +61,7 @@ class EmployeeDaoTest {
 		// given
 		final var notExistingId = new Random().nextLong();
 		// when
-		final var result = this.employeeDao.findById(notExistingId);
+		final var result = this.bookingDao.findById(notExistingId);
 		
 		// then
 		assertThat(result)
@@ -71,15 +71,16 @@ class EmployeeDaoTest {
 	@Test
 	void deleteAll_Should_ReturnEmptyResult_When_AllEntitiesWasRemoved() {
 		// given
-		this.employeeDao.save(Employee.builder().build());
-		this.employeeDao.save(Employee.builder().build());
-		this.employeeDao.save(Employee.builder().build());
+		this.bookingDao.save(Booking.builder().build());
+		this.bookingDao.save(Booking.builder().build());
+		this.bookingDao.save(Booking.builder().build());
 		
 		// when
-		this.employeeDao.deleteAll();
-		final var result = this.employeeDao.findAll();
+		this.bookingDao.deleteAll();
+		final var result = this.bookingDao.findAll();
 		
 		// then
 		assertThat(result).isEmpty();
 	}
+	
 }
