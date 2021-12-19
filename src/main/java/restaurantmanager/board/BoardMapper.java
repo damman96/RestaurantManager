@@ -10,6 +10,8 @@ public interface BoardMapper {
 	
 	BoardDto map(Board board);
 	
-	Board mapToModify(ModifyBoardDto modifyBoardDto);
+	Board mapFromModify(ModifyBoardDto modifyBoardDto);
+	
+	ModifyBoardDto mapToModify(Board board);
 	
 }

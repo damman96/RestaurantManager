@@ -36,7 +36,7 @@ class BoardService {
 	}
 	
 	BoardDto addBoard(final ModifyBoardDto modifyBoardDto) {
-		final var savedBoard = this.boardDao.save(BoardMapper.INSTANCE.mapToModify(modifyBoardDto));
+		final var savedBoard = this.boardDao.save(BoardMapper.INSTANCE.mapFromModify(modifyBoardDto));
 		log.info("Saved board={}", savedBoard);
 		return BoardMapper.INSTANCE.map(savedBoard);
 	}
