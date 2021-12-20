@@ -27,6 +27,8 @@ jobs:
 
   test-unit:
 
+    needs: build
+
     runs-on: ubuntu-latest
 
     services:
@@ -63,6 +65,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    needs: [ build, test-unit ]
+
     services:
       postgres:
         image: postgres:latest
@@ -96,6 +100,8 @@ jobs:
   test-all:
 
     runs-on: ubuntu-latest
+
+    needs: [ build, test-unit, test-IT ]
 
     services:
       postgres:
