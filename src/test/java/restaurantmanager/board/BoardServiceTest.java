@@ -8,7 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static restaurantmanager.utils.BoardFixture.createBoardEntity;
-import static restaurantmanager.utils.BoardFixture.createBoardEntityWithNulls;
+import static restaurantmanager.utils.BoardFixture.createBoardEntityFromModifyDto;
 import static restaurantmanager.utils.BoardFixture.createModifyBoardDto;
 import static restaurantmanager.utils.BoardFixture.createModifyBoardDtoWithNulls;
 
@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import restaurantmanager.NotFoundException;
+import restaurantmanager.utils.BoardFixture;
 
 @ExtendWith(MockitoExtension.class)
 public class BoardServiceTest {
@@ -53,9 +54,9 @@ public class BoardServiceTest {
 	@Test
 	void getAllBoards_Should_ReturnResultList_When_EntitiesArePresentInDb() {
 		// given
-		final var boardsToAdd = List.of(createBoardEntity(1L, 1L, "Single"),
-										createBoardEntity(2L, 2L, "Double"),
-										createBoardEntity(3L, 3L, "Triple"));
+		final var boardsToAdd = List.of(createBoardEntity(1L),
+										createBoardEntity(2L),
+										createBoardEntity(3L));
 		
 		when(this.boardDao.findAll()).thenReturn(boardsToAdd);
 		
@@ -76,7 +77,7 @@ public class BoardServiceTest {
 	void getBoardById_Should_ReturnResult_When_EntityExists() {
 		// given
 		final var id = 1L;
-		final var board = createBoardEntity(id, 1L, "Single");
+		final var board = createBoardEntity(id);
 		when(this.boardDao.findById(id)).thenReturn(Optional.of(board));
 		
 		// when
@@ -103,47 +104,38 @@ public class BoardServiceTest {
 	@Test
 	void addBoard_Should_SaveEntity() {
 		// given
-		final var boardToAdd = createModifyBoardDto(1L, "Single");
+		final var id = 1L;
+		final var boardToAdd = createModifyBoardDto();
 		
 		// when
-		final var entity = Board.builder()
-				.id(1L)
-				.numberOfSeats(boardToAdd.getNumberOfSeats())
-				.boardDescription(boardToAdd.getBoardDescription())
-				.build();
+		final var entity = createBoardEntityFromModifyDto(id, boardToAdd);
 		
 		when(this.boardDao.save(BoardMapper.INSTANCE.mapFromModify(boardToAdd))).thenReturn(entity);
 		final var result = this.boardService.addBoard(boardToAdd);
 		
 		// then
 		assertThat(result.getId()).isNotNull().isPositive();
-		assertThat(result.getNumberOfSeats()).isEqualTo(boardToAdd.getNumberOfSeats());
-		assertThat(result.getBoardDescription()).isEqualTo(boardToAdd.getBoardDescription());
+		BoardFixture.assertBoard(result, boardToAdd);
 	}
 	
 	@Test
 	void updateBoard_Should_UpdateBoard() {
 		// given
 		final var id = 1L;
-		final var existingBoard = createBoardEntity(id, 1L, "Single");
+		final var existingBoard = createBoardEntity(id);
 		when(this.boardDao.findById(id)).thenReturn(Optional.of(existingBoard));
 		
-		final var modifyBoardDto = createModifyBoardDto(2L, "Double");
+		final var boardToUpdate = createModifyBoardDto();
 		
 		// when
-		final var entity = Board.builder()
-				.id(id)
-				.numberOfSeats(modifyBoardDto.getNumberOfSeats())
-				.boardDescription(modifyBoardDto.getBoardDescription())
-				.build();
+		final var entity = createBoardEntityFromModifyDto(id, boardToUpdate);
 		
 		when(this.boardDao.save(entity)).thenReturn(entity);
-		final var result = this.boardService.updateBoard(id, modifyBoardDto);
+		final var result = this.boardService.updateBoard(id, boardToUpdate);
 		
 		// then
 		assertThat(result.getId()).isEqualTo(id);
-		assertThat(result.getNumberOfSeats()).isEqualTo(modifyBoardDto.getNumberOfSeats());
-		assertThat(result.getBoardDescription()).isEqualTo(modifyBoardDto.getBoardDescription());
+		BoardFixture.assertBoard(result, boardToUpdate);
 	}
 	
 	@Test
@@ -164,7 +156,7 @@ public class BoardServiceTest {
 	void deleteBoardById_Should_RemoveEntity_When_EntityExists() {
 		// given
 		final var id = 1L;
-		final var board = createBoardEntityWithNulls(id);
+		final var board = createBoardEntity(id);
 		when(this.boardDao.findById(id)).thenReturn(Optional.of(board));
 		
 		// when

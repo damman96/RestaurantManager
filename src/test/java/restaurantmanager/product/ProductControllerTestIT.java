@@ -254,7 +254,7 @@ class ProductControllerTestIT {
 	void updateProduct_Should_ReturnStatusCode200_When_SuccessfullyUpdatedEntity() {
 		// given
 		final var saved = this.productDao.save(createProductEntityWithNulls());
-		final var modifyProductDto = createModifyProductDto("productType");
+		final var modifyProductDto = createModifyProductDto();
 		
 		final var body = new HttpEntity<>(modifyProductDto);
 		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + PRODUCTS + SLASH + UPDATE + SLASH + saved.getId();

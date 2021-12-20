@@ -3,6 +3,7 @@ package restaurantmanager.product;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static restaurantmanager.utils.ProductFixture.assertProduct;
 import static restaurantmanager.utils.ProductFixture.createModifyProductDto;
 import static restaurantmanager.utils.ProductFixture.createModifyProductDtoWithNulls;
 import static restaurantmanager.utils.ProductFixture.createProductEntity;
@@ -138,18 +139,14 @@ class ProductServiceTestIT {
 	@Test
 	void addProduct_Should_SaveEntity() {
 		// given
-		final var productToAdd = createModifyProductDto("testType");
+		final var productToAdd = createModifyProductDto();
 		
 		// when
 		final var result = this.productService.addProduct(productToAdd);
 		
 		// then
 		assertThat(result.getId()).isNotNull().isPositive();
-		assertThat(result.getName()).isEqualTo(productToAdd.getName());
-		assertThat(result.getCategory()).isEqualTo(productToAdd.getCategory());
-		assertThat(result.getDescription()).isEqualTo(productToAdd.getDescription());
-		assertThat(result.getPrice()).isEqualTo(productToAdd.getPrice());
-		assertThat(result.getProductType()).isEqualTo(productToAdd.getProductType());
+		assertProduct(result, productToAdd);
 	}
 	
 	@Test
@@ -158,18 +155,14 @@ class ProductServiceTestIT {
 		final var existingProduct = createProductEntity(1L, "testType");
 		this.productDao.save(existingProduct);
 		
-		final var modifyProductDto = createModifyProductDto("newTestType");
+		final var modifyProductDto = createModifyProductDto();
 		
 		// when
 		final var result = this.productService.updateProduct(existingProduct.getId(), modifyProductDto);
 		
 		// then
 		assertThat(result.getId()).isEqualTo(existingProduct.getId());
-		assertThat(result.getName()).isEqualTo(modifyProductDto.getName());
-		assertThat(result.getCategory()).isEqualTo(modifyProductDto.getCategory());
-		assertThat(result.getDescription()).isEqualTo(modifyProductDto.getDescription());
-		assertThat(result.getPrice()).isEqualTo(modifyProductDto.getPrice());
-		assertThat(result.getProductType()).isEqualTo(modifyProductDto.getProductType());
+		assertProduct(result, modifyProductDto);
 	}
 	
 	@Test

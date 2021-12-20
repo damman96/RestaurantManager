@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import restaurantmanager.NotFoundException;
+import restaurantmanager.utils.EmployeeFixture;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -110,13 +111,7 @@ class EmployeeServiceTestIT {
 		
 		// then
 		assertThat(result.getId()).isNotNull().isPositive();
-		assertThat(result.getFirstName()).isEqualTo(employeeToAdd.getFirstName());
-		assertThat(result.getLastName()).isEqualTo(employeeToAdd.getLastName());
-		assertThat(result.getEmail()).isEqualTo(employeeToAdd.getEmail());
-		assertThat(result.getPosition()).isEqualTo(employeeToAdd.getPosition());
-		assertThat(result.getSalary()).isEqualTo(employeeToAdd.getSalary());
-		assertThat(result.getPhoneNumber()).isEqualTo(employeeToAdd.getPhoneNumber());
-		assertThat(result.getStartDate()).isEqualTo(employeeToAdd.getStartDate());
+		EmployeeFixture.assertEmployee(result, employeeToAdd);
 	}
 	
 	@Test
@@ -125,20 +120,14 @@ class EmployeeServiceTestIT {
 		final var existingEmployee = createEmployeeEntity(1L);
 		this.employeeDao.save(existingEmployee);
 		
-		final var modifyEmployeeDto = createModifyEmployeeDto();
+		final var employeeToModify = createModifyEmployeeDto();
 		
 		// when
-		final var result = this.employeeService.updateEmployee(existingEmployee.getId(), modifyEmployeeDto);
+		final var result = this.employeeService.updateEmployee(existingEmployee.getId(), employeeToModify);
 		
 		// then
 		assertThat(result.getId()).isEqualTo(existingEmployee.getId());
-		assertThat(result.getFirstName()).isEqualTo(modifyEmployeeDto.getFirstName());
-		assertThat(result.getLastName()).isEqualTo(modifyEmployeeDto.getLastName());
-		assertThat(result.getEmail()).isEqualTo(modifyEmployeeDto.getEmail());
-		assertThat(result.getPosition()).isEqualTo(modifyEmployeeDto.getPosition());
-		assertThat(result.getSalary()).isEqualTo(modifyEmployeeDto.getSalary());
-		assertThat(result.getPhoneNumber()).isEqualTo(modifyEmployeeDto.getPhoneNumber());
-		assertThat(result.getStartDate()).isEqualTo(modifyEmployeeDto.getStartDate());
+		EmployeeFixture.assertEmployee(result, employeeToModify);
 	}
 	
 	@Test

@@ -74,9 +74,9 @@ class BoardControllerTestIT {
 		//given
 		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS;
 		final var boards = List.of(
-				createBoardEntityWithNulls(1L),
-				createBoardEntityWithNulls(2L),
-				createBoardEntityWithNulls(3L));
+				createBoardEntityWithNulls(),
+				createBoardEntityWithNulls(),
+				createBoardEntityWithNulls());
 		this.boardDao.saveAll(boards);
 		
 		// when
@@ -156,7 +156,7 @@ class BoardControllerTestIT {
 	void updateBoard_Should_ReturnStatusCode200_When_SuccessfullyUpdatedEntity() {
 		// given
 		final var saved = this.boardDao.save(createBoardEntityWithNulls());
-		final var modifyBoardDto = createModifyBoardDto(2L, "Double");
+		final var modifyBoardDto = createModifyBoardDto();
 		
 		final var body = new HttpEntity<>(modifyBoardDto);
 		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + UPDATE + SLASH + saved.getId();
