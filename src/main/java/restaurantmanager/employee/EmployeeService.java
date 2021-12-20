@@ -35,7 +35,7 @@ public class EmployeeService {
 	}
 	
 	EmployeeDto addEmployee(final ModifyEmployeeDto modifyEmployeeDto) {
-		final var savedEmployee = this.employeeDao.save(EmployeeMapper.INSTANCE.mapToModify(modifyEmployeeDto));
+		final var savedEmployee = this.employeeDao.save(EmployeeMapper.INSTANCE.mapFromModify(modifyEmployeeDto));
 		log.info("Saved employee={}", savedEmployee);
 		return EmployeeMapper.INSTANCE.map(savedEmployee);
 	}
