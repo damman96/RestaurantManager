@@ -32,7 +32,7 @@ class BookingControllerTestIT {
 	
 	private static final String SLASH = "/";
 	
-	private static final String BOARDS = "bookings";
+	private static final String BOOKINGS = "bookings";
 	private static final String UPDATE = "update";
 	private static final String DELETE = "delete";
 	
@@ -53,7 +53,7 @@ class BookingControllerTestIT {
 	@Test
 	void getAllBookings_Should_ReturnStatusCode200AndEmptyList_When_DatabaseIsEmpty() {
 		// given
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOOKINGS;
 		
 		// when
 		final var result = this.restTemplate.exchange(
@@ -71,7 +71,7 @@ class BookingControllerTestIT {
 	@Test
 	void getAllBookings_Should_ReturnStatusCode200AndResultList_When_DatabaseIsNotEmpty() {
 		//given
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOOKINGS;
 		final var bookings = List.of(
 				createBookingEntityWithNulls(),
 				createBookingEntityWithNulls(),
@@ -97,7 +97,7 @@ class BookingControllerTestIT {
 	void getBookingById_Should_ReturnStatusCode200AndResult_When_EntityWithGivenIdExists() {
 		// given
 		final var saved = this.bookingDao.save(createBookingEntityWithNulls());
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + saved.getId();
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOOKINGS + SLASH + saved.getId();
 		
 		// when
 		final var result = this.restTemplate.exchange(
@@ -117,7 +117,7 @@ class BookingControllerTestIT {
 	void getBookingById_Should_ReturnStatusCode404_When_EntityWithGivenIdNotExist() {
 		// given
 		final var id = createRandomLong();
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + id;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOOKINGS + SLASH + id;
 		
 		// when
 		final var result = this.restTemplate.exchange(
@@ -133,7 +133,7 @@ class BookingControllerTestIT {
 	@Test
 	void addBooking_Should_ReturnStatusCode200AndResult_When_SuccessfullyAddedBooking() {
 		// given
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOOKINGS;
 		final var bookingToAdd = createModifyBookingDtoWithNulls();
 		final var body = new HttpEntity<>(bookingToAdd);
 		
@@ -165,7 +165,7 @@ class BookingControllerTestIT {
 		final var modifyBookingDto = createModifyBookingDto();
 		
 		final var body = new HttpEntity<>(modifyBookingDto);
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + UPDATE + SLASH + saved.getId();
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOOKINGS + SLASH + UPDATE + SLASH + saved.getId();
 		
 		// when
 		final var result = this.restTemplate.exchange(
@@ -192,7 +192,7 @@ class BookingControllerTestIT {
 	void updateBooking_Should_ReturnStatusCode404_When_EntityWithGivenIdNotExist() {
 		// given
 		final var id = createRandomLong();
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + UPDATE + SLASH + id;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOOKINGS + SLASH + UPDATE + SLASH + id;
 		final var body = new HttpEntity<>(createModifyBookingDtoWithNulls());
 		
 		// when
@@ -209,7 +209,7 @@ class BookingControllerTestIT {
 	void deleteBookingById_Should_ReturnStatusCode200AndResult_When_EntityWithGivenIdWasDeleted() {
 		// given
 		final var saved = this.bookingDao.save(createBookingEntityWithNulls());
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + DELETE + SLASH + saved.getId();
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOOKINGS + SLASH + DELETE + SLASH + saved.getId();
 		
 		// when
 		final var result = this.restTemplate.exchange(
