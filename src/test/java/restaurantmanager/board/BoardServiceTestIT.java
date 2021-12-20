@@ -3,6 +3,7 @@ package restaurantmanager.board;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static restaurantmanager.utils.BoardFixture.assertBoard;
 import static restaurantmanager.utils.BoardFixture.createBoardEntity;
 import static restaurantmanager.utils.BoardFixture.createBoardEntityWithNulls;
 import static restaurantmanager.utils.BoardFixture.createModifyBoardDto;
@@ -46,9 +47,9 @@ class BoardServiceTestIT {
 	@Test
 	void getAllBoards_Should_ReturnResultList_When_EntitiesArePresentInDb() {
 		// given
-		final var boardsToAdd = List.of(createBoardEntity(1L, 1L, "Single"),
-										createBoardEntity(2L, 2L, "Double"),
-										createBoardEntity(3L, 3L, "Triple"));
+		final var boardsToAdd = List.of(createBoardEntity(1L),
+										createBoardEntity(2L),
+										createBoardEntity(3L));
 		this.boardDao.saveAll(boardsToAdd);
 		
 		// when
@@ -67,7 +68,7 @@ class BoardServiceTestIT {
 	@Test
 	void getBoardById_Should_ReturnResult_When_EntityExists() {
 		// given
-		final var board = createBoardEntity(1L, 1L, "Single");
+		final var board = createBoardEntity(1L);
 		this.boardDao.save(board);
 		
 		// when
@@ -93,32 +94,30 @@ class BoardServiceTestIT {
 	@Test
 	void addBoard_Should_SaveEntity() {
 		// given
-		final var boardToAdd = createModifyBoardDto(1L, "Single");
+		final var boardToAdd = createModifyBoardDto();
 		
 		// when
 		final var result = this.boardService.addBoard(boardToAdd);
 		
 		// then
 		assertThat(result.getId()).isNotNull().isPositive();
-		assertThat(result.getNumberOfSeats()).isEqualTo(boardToAdd.getNumberOfSeats());
-		assertThat(result.getBoardDescription()).isEqualTo(boardToAdd.getBoardDescription());
+		assertBoard(result, boardToAdd);
 	}
 	
 	@Test
 	void updateBoard_Should_UpdateBoard() {
 		// given
-		final var existingBoard = createBoardEntity(1L, 1L, "Single");
+		final var existingBoard = createBoardEntity(1L);
 		this.boardDao.save(existingBoard);
 		
-		final var modifyBoardDto = createModifyBoardDto(2L, "Double");
+		final var boardToUpdate = createModifyBoardDto();
 		
 		// when
-		final var result = this.boardService.updateBoard(existingBoard.getId(), modifyBoardDto);
+		final var result = this.boardService.updateBoard(existingBoard.getId(), boardToUpdate);
 		
 		// then
 		assertThat(result.getId()).isEqualTo(existingBoard.getId());
-		assertThat(result.getNumberOfSeats()).isEqualTo(modifyBoardDto.getNumberOfSeats());
-		assertThat(result.getBoardDescription()).isEqualTo(modifyBoardDto.getBoardDescription());
+		assertBoard(result, boardToUpdate);
 	}
 	
 	@Test

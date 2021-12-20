@@ -1,12 +1,13 @@
 package restaurantmanager.utils;
 
-import static restaurantmanager.utils.RandomUtilsFixture.createRandomLong;
+import static org.assertj.core.api.Assertions.assertThat;
+import static restaurantmanager.utils.RandomUtilsFixture.createRandomBigDecimal;
 import static restaurantmanager.utils.RandomUtilsFixture.createRandomString;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import restaurantmanager.employee.Employee;
+import restaurantmanager.employee.EmployeeDto;
 import restaurantmanager.employee.ModifyEmployeeDto;
 
 public abstract class EmployeeFixture {
@@ -24,9 +25,22 @@ public abstract class EmployeeFixture {
 				.lastName(createRandomString())
 				.email(createRandomString())
 				.position(createRandomString())
-				.salary(BigDecimal.valueOf(createRandomLong(), SCALE))
+				.salary(createRandomBigDecimal())
 				.phoneNumber(createRandomString())
 				.startDate(LocalDate.now())
+				.build();
+	}
+	
+	public static Employee createEmployeeEntityFromModifyDto(final Long id, final ModifyEmployeeDto modifyEmployeeDto) {
+		return Employee.builder()
+				.id(id)
+				.firstName(modifyEmployeeDto.getFirstName())
+				.lastName(modifyEmployeeDto.getLastName())
+				.email(modifyEmployeeDto.getEmail())
+				.position(modifyEmployeeDto.getPosition())
+				.salary(modifyEmployeeDto.getSalary())
+				.phoneNumber(modifyEmployeeDto.getPhoneNumber())
+				.startDate(modifyEmployeeDto.getStartDate())
 				.build();
 	}
 	
@@ -40,9 +54,19 @@ public abstract class EmployeeFixture {
 				.lastName(createRandomString())
 				.email(createRandomString())
 				.position(createRandomString())
-				.salary(BigDecimal.valueOf(createRandomLong(), SCALE))
+				.salary(createRandomBigDecimal())
 				.phoneNumber(createRandomString())
 				.startDate(LocalDate.now())
 				.build();
+	}
+	
+	public static void assertEmployee(final EmployeeDto result, final ModifyEmployeeDto modifyEmployeeDto) {
+		assertThat(result.getFirstName()).isEqualTo(modifyEmployeeDto.getFirstName());
+		assertThat(result.getLastName()).isEqualTo(modifyEmployeeDto.getLastName());
+		assertThat(result.getEmail()).isEqualTo(modifyEmployeeDto.getEmail());
+		assertThat(result.getPosition()).isEqualTo(modifyEmployeeDto.getPosition());
+		assertThat(result.getSalary()).isEqualTo(modifyEmployeeDto.getSalary());
+		assertThat(result.getPhoneNumber()).isEqualTo(modifyEmployeeDto.getPhoneNumber());
+		assertThat(result.getStartDate()).isEqualTo(modifyEmployeeDto.getStartDate());
 	}
 }

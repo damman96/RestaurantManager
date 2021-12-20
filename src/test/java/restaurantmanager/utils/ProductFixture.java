@@ -1,16 +1,14 @@
 package restaurantmanager.utils;
 
-import static restaurantmanager.utils.RandomUtilsFixture.createRandomLong;
+import static org.assertj.core.api.Assertions.assertThat;
+import static restaurantmanager.utils.RandomUtilsFixture.createRandomBigDecimal;
 import static restaurantmanager.utils.RandomUtilsFixture.createRandomString;
-
-import java.math.BigDecimal;
 
 import restaurantmanager.product.ModifyProductDto;
 import restaurantmanager.product.Product;
+import restaurantmanager.product.ProductDto;
 
 public abstract class ProductFixture {
-	
-	private static final int SCALE = 2;
 	
 	public static Product createProductEntityWithNulls() {
 		return Product.builder().build();
@@ -22,7 +20,7 @@ public abstract class ProductFixture {
 				.name(createRandomString())
 				.category(createRandomString())
 				.description(createRandomString())
-				.price(BigDecimal.valueOf(createRandomLong(), SCALE))
+				.price(createRandomBigDecimal())
 				.productType(productType)
 				.build();
 	}
@@ -33,7 +31,7 @@ public abstract class ProductFixture {
 				.name(createRandomString())
 				.category(category)
 				.description(createRandomString())
-				.price(BigDecimal.valueOf(createRandomLong(), SCALE))
+				.price(createRandomBigDecimal())
 				.productType(productType)
 				.build();
 	}
@@ -42,13 +40,21 @@ public abstract class ProductFixture {
 		return ModifyProductDto.builder().build();
 	}
 	
-	public static ModifyProductDto createModifyProductDto(final String productType) {
+	public static ModifyProductDto createModifyProductDto() {
 		return ModifyProductDto.builder()
 				.name(createRandomString())
 				.category(createRandomString())
 				.description(createRandomString())
-				.price(BigDecimal.valueOf(createRandomLong(), SCALE))
-				.productType(productType)
+				.price(createRandomBigDecimal())
+				.productType(createRandomString())
 				.build();
+	}
+	
+	public static void assertProduct(final ProductDto result, final ModifyProductDto modifyProductDto) {
+		assertThat(result.getName()).isEqualTo(modifyProductDto.getName());
+		assertThat(result.getCategory()).isEqualTo(modifyProductDto.getCategory());
+		assertThat(result.getDescription()).isEqualTo(modifyProductDto.getDescription());
+		assertThat(result.getPrice()).isEqualTo(modifyProductDto.getPrice());
+		assertThat(result.getProductType()).isEqualTo(modifyProductDto.getProductType());
 	}
 }
