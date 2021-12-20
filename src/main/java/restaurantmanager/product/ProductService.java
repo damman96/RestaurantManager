@@ -53,7 +53,7 @@ public class ProductService {
 	}
 	
 	ProductDto addProduct(final ModifyProductDto modifyProductDto) {
-		final var savedProduct = this.productDao.save(ProductMapper.INSTANCE.mapToModify(modifyProductDto));
+		final var savedProduct = this.productDao.save(ProductMapper.INSTANCE.mapFromModify(modifyProductDto));
 		log.info("Saved product={}", savedProduct);
 		return ProductMapper.INSTANCE.map(savedProduct);
 	}
