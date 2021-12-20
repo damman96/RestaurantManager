@@ -14,6 +14,17 @@ public abstract class ProductFixture {
 		return Product.builder().build();
 	}
 	
+	public static Product createProductEntity(final Long id) {
+		return Product.builder()
+				.id(id)
+				.name(createRandomString())
+				.category(createRandomString())
+				.description(createRandomString())
+				.price(createRandomBigDecimal())
+				.productType(createRandomString())
+				.build();
+	}
+	
 	public static Product createProductEntity(final Long id, final String productType) {
 		return Product.builder()
 				.id(id)
@@ -33,6 +44,17 @@ public abstract class ProductFixture {
 				.description(createRandomString())
 				.price(createRandomBigDecimal())
 				.productType(productType)
+				.build();
+	}
+	
+	public static Product createProductEntityFromModifyDto(final Long id, final ModifyProductDto modifyProductDto) {
+		return Product.builder()
+				.id(id)
+				.name(modifyProductDto.getName())
+				.category(modifyProductDto.getCategory())
+				.description(modifyProductDto.getDescription())
+				.price(modifyProductDto.getPrice())
+				.productType(modifyProductDto.getProductType())
 				.build();
 	}
 	
