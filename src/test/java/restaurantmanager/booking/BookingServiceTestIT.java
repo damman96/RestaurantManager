@@ -3,6 +3,7 @@ package restaurantmanager.booking;
 import static java.util.stream.Collectors.toUnmodifiableList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
+import static restaurantmanager.utils.BookingFixture.assertBooking;
 import static restaurantmanager.utils.BookingFixture.createBookingEntity;
 import static restaurantmanager.utils.BookingFixture.createBookingEntityWithNulls;
 import static restaurantmanager.utils.BookingFixture.createModifyBookingDto;
@@ -18,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import restaurantmanager.NotFoundException;
+import restaurantmanager.utils.BookingFixture;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -113,14 +115,7 @@ class BookingServiceTestIT {
 		
 		// then
 		assertThat(result.getId()).isNotNull().isPositive();
-		assertThat(result.getBookingDate()).isEqualTo(bookingToAdd.getBookingDate());
-		assertThat(result.getBookingTime()).isEqualTo(bookingToAdd.getBookingTime());
-		assertThat(result.getCreatedAt()).isEqualTo(bookingToAdd.getCreatedAt());
-		assertThat(result.getBoardId()).isEqualTo(bookingToAdd.getBoardId());
-		assertThat(result.getEmployeeId()).isEqualTo(bookingToAdd.getEmployeeId());
-		assertThat(result.getPersonalData()).isEqualTo(bookingToAdd.getPersonalData());
-		assertThat(result.getPhoneNumber()).isEqualTo(bookingToAdd.getPhoneNumber());
-		assertThat(result.getDescription()).isEqualTo(bookingToAdd.getDescription());
+		BookingFixture.assertBooking(result, bookingToAdd);
 	}
 	
 	@Test
@@ -129,21 +124,14 @@ class BookingServiceTestIT {
 		final var existingBooking = createBookingEntity(1L);
 		this.bookingDao.save(existingBooking);
 		
-		final var modifyBookingDto = createModifyBookingDto();
+		final var bookingToUpdate = createModifyBookingDto();
 		
 		// when
-		final var result = this.bookingService.updateBooking(existingBooking.getId(), modifyBookingDto);
+		final var result = this.bookingService.updateBooking(existingBooking.getId(), bookingToUpdate);
 		
 		// then
 		assertThat(result.getId()).isEqualTo(existingBooking.getId());
-		assertThat(result.getBookingDate()).isEqualTo(modifyBookingDto.getBookingDate());
-		assertThat(result.getBookingTime()).isEqualTo(modifyBookingDto.getBookingTime());
-		assertThat(result.getCreatedAt()).isEqualTo(modifyBookingDto.getCreatedAt());
-		assertThat(result.getBoardId()).isEqualTo(modifyBookingDto.getBoardId());
-		assertThat(result.getEmployeeId()).isEqualTo(modifyBookingDto.getEmployeeId());
-		assertThat(result.getPersonalData()).isEqualTo(modifyBookingDto.getPersonalData());
-		assertThat(result.getPhoneNumber()).isEqualTo(modifyBookingDto.getPhoneNumber());
-		assertThat(result.getDescription()).isEqualTo(modifyBookingDto.getDescription());
+		assertBooking(result, bookingToUpdate);
 	}
 	
 	@Test
