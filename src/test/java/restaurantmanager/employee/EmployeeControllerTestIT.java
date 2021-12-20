@@ -32,7 +32,7 @@ class EmployeeControllerTestIT {
 	
 	private static final String SLASH = "/";
 	
-	private static final String BOARDS = "employees";
+	private static final String EMPLOYEES = "employees";
 	private static final String UPDATE = "update";
 	private static final String DELETE = "delete";
 	
@@ -53,7 +53,7 @@ class EmployeeControllerTestIT {
 	@Test
 	void getAllEmployees_Should_ReturnStatusCode200AndEmptyList_When_DatabaseIsEmpty() {
 		// given
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + EMPLOYEES;
 		
 		// when
 		final var result = this.restTemplate.exchange(
@@ -71,7 +71,7 @@ class EmployeeControllerTestIT {
 	@Test
 	void getAllEmployees_Should_ReturnStatusCode200AndResultList_When_DatabaseIsNotEmpty() {
 		//given
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + EMPLOYEES;
 		final var employees = List.of(
 				createEmployeeEntityWithNulls(),
 				createEmployeeEntityWithNulls(),
@@ -97,7 +97,7 @@ class EmployeeControllerTestIT {
 	void getEmployeeById_Should_ReturnStatusCode200AndResult_When_EntityWithGivenIdExists() {
 		// given
 		final var saved = this.employeeDao.save(createEmployeeEntityWithNulls());
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + saved.getId();
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + EMPLOYEES + SLASH + saved.getId();
 		
 		// when
 		final var result = this.restTemplate.exchange(
@@ -117,7 +117,7 @@ class EmployeeControllerTestIT {
 	void getEmployeeById_Should_ReturnStatusCode404_When_EntityWithGivenIdNotExist() {
 		// given
 		final var id = createRandomLong();
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + id;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + EMPLOYEES + SLASH + id;
 		
 		// when
 		final var result = this.restTemplate.exchange(
@@ -133,7 +133,7 @@ class EmployeeControllerTestIT {
 	@Test
 	void addEmployee_Should_ReturnStatusCode200AndResult_When_SuccessfullyAddedEmployee() {
 		// given
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + EMPLOYEES;
 		final var employeeToAdd = createModifyEmployeeDtoWithNulls();
 		final var body = new HttpEntity<>(employeeToAdd);
 		
@@ -164,7 +164,7 @@ class EmployeeControllerTestIT {
 		final var modifyEmployeeDto = createModifyEmployeeDto();
 		
 		final var body = new HttpEntity<>(modifyEmployeeDto);
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + UPDATE + SLASH + saved.getId();
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + EMPLOYEES + SLASH + UPDATE + SLASH + saved.getId();
 		
 		// when
 		final var result = this.restTemplate.exchange(
@@ -190,7 +190,7 @@ class EmployeeControllerTestIT {
 	void updateEmployee_Should_ReturnStatusCode404_When_EntityWithGivenIdNotExist() {
 		// given
 		final var id = createRandomLong();
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + UPDATE + SLASH + id;
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + EMPLOYEES + SLASH + UPDATE + SLASH + id;
 		final var body = new HttpEntity<>(createModifyEmployeeDtoWithNulls());
 		
 		// when
@@ -207,7 +207,7 @@ class EmployeeControllerTestIT {
 	void deleteEmployeeById_Should_ReturnStatusCode200AndResult_When_EntityWithGivenIdWasDeleted() {
 		// given
 		final var saved = this.employeeDao.save(createEmployeeEntityWithNulls());
-		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + BOARDS + SLASH + DELETE + SLASH + saved.getId();
+		final var baseUrl = HTTP_LOCAL_HOST + this.randomServerPort + SLASH + EMPLOYEES + SLASH + DELETE + SLASH + saved.getId();
 		
 		// when
 		final var result = this.restTemplate.exchange(
