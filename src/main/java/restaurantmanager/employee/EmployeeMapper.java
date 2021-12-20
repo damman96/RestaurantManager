@@ -10,6 +10,8 @@ public interface EmployeeMapper {
 	
 	EmployeeDto map(Employee employee);
 	
-	Employee mapToModify(ModifyEmployeeDto modifyEmployeeDto);
+	Employee mapFromModify(ModifyEmployeeDto modifyEmployeeDto);
+	
+	ModifyEmployeeDto mapToModify(Employee employee);
 	
 }
