@@ -35,7 +35,7 @@ public class BookingService {
 	}
 	
 	BookingDto addBooking(final ModifyBookingDto modifyBookingDto) {
-		final var savedBooking = this.bookingDao.save(BookingMapper.INSTANCE.mapToModify(modifyBookingDto));
+		final var savedBooking = this.bookingDao.save(BookingMapper.INSTANCE.mapFromModify(modifyBookingDto));
 		log.info("Saved booking={}", savedBooking);
 		return BookingMapper.INSTANCE.map(savedBooking);
 	}
