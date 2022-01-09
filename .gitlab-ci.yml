@@ -1,0 +1,32 @@
+---
+image: maven:3-jdk-11
+
+stages:
+  - build
+  - test
+
+build-ubuntu:
+  stage: build
+
+  tags: [ ]
+  script: "mvn clean install -D=skipTests"
+
+test-unit-ubuntu:
+  stage: test
+  needs: [ "build-ubuntu" ]
+
+  tags: [ ]
+  script: "mvn test '-Dtest=!*TestIT*'"
+
+build-windows:
+  stage: build
+
+  tags: [ shared-windows ]
+  script: "echo %JAVA_HOME%"
+
+test-unit-windows:
+  stage: test
+  needs: [ "build-windows" ]
+
+  tags: [ shared-windows ]
+  script: "echo %JAVA_HOME%"
