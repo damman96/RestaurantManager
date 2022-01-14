@@ -204,4 +204,4 @@ jobs:
           cache: maven
 
       - name: All tests with Maven
-        run: mvn test
+        run: mvn test '-Dtest=*Test*'
