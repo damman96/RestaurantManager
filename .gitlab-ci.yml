@@ -5,20 +5,20 @@ stages:
   - build
   - test
 
-build-ubuntu:
+build-job-ubuntu:
   stage: build
 
   tags: [ ]
   script: "mvn clean install -D=skipTests"
 
-test-unit-ubuntu:
+test-job-unit-ubuntu:
   stage: test
-  needs: [ "build-ubuntu" ]
+  needs: [ "build-job-ubuntu" ]
 
   tags: [ ]
   script: "mvn test '-Dtest=!*TestIT*'"
 
-build-windows:
+build-job-windows:
   stage: build
 
   tags: [ shared-windows ]
@@ -26,7 +26,7 @@ build-windows:
 
 test-unit-windows:
   stage: test
-  needs: [ "build-windows" ]
+  needs: [ "build-job-windows" ]
 
   tags: [ shared-windows ]
   script: "echo %JAVA_HOME%"
