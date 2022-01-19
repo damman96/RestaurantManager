@@ -1,4 +1,3 @@
----
 image: maven:3-jdk-11
 
 stages:
@@ -8,15 +7,7 @@ stages:
 build-job-ubuntu:
   stage: build
 
-  tags: [ ]
   script: "mvn clean install -D=skipTests"
-
-test-job-unit-ubuntu:
-  stage: test
-  needs: [ "build-job-ubuntu" ]
-
-  tags: [ ]
-  script: "mvn test '-Dtest=!*TestIT*'"
 
 build-job-windows:
   stage: build
@@ -24,9 +15,43 @@ build-job-windows:
   tags: [ shared-windows ]
   script: "echo %JAVA_HOME%"
 
+test-job-unit-ubuntu:
+  stage: test
+  needs: [ "build-job-ubuntu" ]
+
+  script: "mvn test '-Dtest=!*TestIT*'"
+
 test-unit-windows:
   stage: test
   needs: [ "build-job-windows" ]
 
   tags: [ shared-windows ]
   script: "echo %JAVA_HOME%"
+
+test-job-IT-ubuntu:
+  stage: test
+  needs: [ "build-job-ubuntu", "test-job-unit-ubuntu" ]
+
+  services:
+    - postgres:latest
+
+  variables:
+    POSTGRES_DB: restaurant
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: admin
+
+  script: "mvn test '-Dtest=*TestIT*' '-Dspring.profiles.active=gitlab'"
+
+test-job-all-ubuntu:
+  stage: test
+  needs: [ "build-job-ubuntu", "test-job-unit-ubuntu", "test-job-IT-ubuntu" ]
+
+  services:
+    - postgres:latest
+
+  variables:
+    POSTGRES_DB: restaurant
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: admin
+
+  script: "mvn test '-Dtest=*Test*' '-Dspring.profiles.active=gitlab'"
