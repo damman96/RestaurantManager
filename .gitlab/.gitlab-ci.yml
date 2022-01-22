@@ -1,8 +1,9 @@
 image: maven:3-jdk-11
 
 variables:
-  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-  GIT_DEPTH: "0"
+  POSTGRES_DB: restaurant
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: admin
 
 stages:
   - build
@@ -41,11 +42,6 @@ test-job-IT:
   services:
     - postgres:latest
 
-  variables:
-    POSTGRES_DB: restaurant
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: admin
-
   script: "mvn test '-Dtest=*TestIT*' '-Dspring.profiles.active=gitlab'"
 
 test-job-all:
@@ -54,10 +50,5 @@ test-job-all:
 
   services:
     - postgres:latest
-
-  variables:
-    POSTGRES_DB: restaurant
-    POSTGRES_USER: postgres
-    POSTGRES_PASSWORD: admin
 
   script: "mvn test '-Dtest=*Test*' '-Dspring.profiles.active=gitlab'"
