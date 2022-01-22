@@ -1,19 +1,19 @@
 version: 2.1
 
 jobs:
-  build:
+  sonarcloud-analysis:
     docker:
-      - image: 'circleci/openjdk:11-jdk'
+      - image: circleci/openjdk:11-jdk
     steps:
       - checkout
       - run:
           name: Analyze on SonarCloud
           command: mvn verify sonar:sonar -Dsonar.projectKey=damman96_RestaurantManager
 
-  build-ubuntu:
+  build:
 
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: circleci/openjdk:11-jdk
 
     steps:
       - checkout
@@ -21,10 +21,10 @@ jobs:
           name: Build with Maven on Ubuntu
           command: mvn clean install -D=skipTests
 
-  unit-test-ubuntu:
+  test-unit:
 
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: circleci/openjdk:11-jdk
 
     steps:
       - checkout
@@ -32,10 +32,10 @@ jobs:
           name: Unit tests with Maven
           command: mvn test '-Dtest=!*TestIT*'
 
-  test-IT-ubuntu:
+  test-IT:
 
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: circleci/openjdk:11-jdk
         environment:
           JDBC_DATABASE_URL: jdbc:postgresql://localhost:5432/restaurant
           JDBC_DATABASE_USERNAMEL: postgres
@@ -51,10 +51,10 @@ jobs:
           name: Integration tests with Maven
           command: mvn test '-Dtest=*TestIT*'
 
-  test-all-ubuntu:
+  test-all:
 
     docker:
-      - image: cimg/openjdk:11.0.13
+      - image: circleci/openjdk:11-jdk
         environment:
           JDBC_DATABASE_URL: jdbc:postgresql://localhost:5432/restaurant
           JDBC_DATABASE_USERNAMEL: postgres
@@ -73,19 +73,19 @@ jobs:
 workflows:
   build_and_test:
     jobs:
-      - build:
+      - sonarcloud-analysis:
           context: SonarCloud
 
-      - build-ubuntu
+      - build
 
-      - unit-test-ubuntu:
+      - test-unit:
           requires:
-            - build-ubuntu
+            - build
 
-      - test-IT-ubuntu:
+      - test-IT:
           requires:
-            - unit-test-ubuntu
+            - test-unit
 
-      - test-all-ubuntu:
+      - test-all:
           requires:
-            - test-IT-ubuntu
+            - test-IT
