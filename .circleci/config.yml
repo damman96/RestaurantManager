@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  win: circleci/windows@2.4.1
-
 jobs:
   build-ubuntu:
 
@@ -15,21 +12,6 @@ jobs:
           name: Build with Maven on Ubuntu
           command: mvn clean install -D=skipTests
 
-  build-windows:
-
-    executor:
-      name: win/default
-      size: "medium"
-
-    steps:
-      - checkout
-      - run:
-          name: Install maven
-          command: choco install maven
-      - run:
-          name: Build with Maven on Ubuntu
-          command: mvn clean install -D=skipTests
-
   unit-test-ubuntu:
 
     docker:
@@ -37,21 +19,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: Unit tests with Maven
-          command: mvn test '-Dtest=!*TestIT*'
-
-  unit-test-windows:
-
-    executor:
-      name: win/default
-      size: "medium"
-
-    steps:
-      - checkout
-      - run:
-          name: Install maven
-          command: choco install maven
       - run:
           name: Unit tests with Maven
           command: mvn test '-Dtest=!*TestIT*'
@@ -98,39 +65,15 @@ workflows:
   build_and_test:
     jobs:
       - build-ubuntu
-      - build-windows
 
       - unit-test-ubuntu:
           requires:
             - build-ubuntu
 
-      - unit-test-windows:
-          requires:
-            - build-windows
-
       - test-IT-ubuntu:
           requires:
             - unit-test-ubuntu
-            - unit-test-windows
 
       - test-all-ubuntu:
           requires:
             - test-IT-ubuntu
-
-  #  build-macOS:
-  #
-  #    macos:
-  #      xcode: 12.5.1
-  #
-  #    steps:
-  #      - checkout
-  #      - run:
-  #          name: Install OpenJDK 11
-  #          command: |
-  #            sudo apt-get update && sudo apt-get install openjdk-11-jdk
-  #            sudo update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
-  #            sudo update-alternatives --set javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
-  #            java -version
-  #      - run:
-  #          name: Build with Maven on Ubuntu
-  #          command: mvn clean install -D=skipTests
