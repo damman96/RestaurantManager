@@ -9,24 +9,11 @@ build-job-ubuntu:
 
   script: "mvn clean install -D=skipTests"
 
-build-job-windows:
-  stage: build
-
-  tags: [ shared-windows ]
-  script: "echo %JAVA_HOME%"
-
 test-job-unit-ubuntu:
   stage: test
   needs: [ "build-job-ubuntu" ]
 
   script: "mvn test '-Dtest=!*TestIT*'"
-
-test-unit-windows:
-  stage: test
-  needs: [ "build-job-windows" ]
-
-  tags: [ shared-windows ]
-  script: "echo %JAVA_HOME%"
 
 test-job-IT-ubuntu:
   stage: test
