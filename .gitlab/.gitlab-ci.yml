@@ -8,14 +8,23 @@ stages:
   - build
   - test
 
+compile:
+  stage: .pre
+
+  script: "mvn compile"
+
 sonarcloud-analysis:
   stage: build
+
+  needs: [ "compile" ]
 
   script:
     - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=damman96_RestaurantManager
 
 build-job:
   stage: build
+
+  needs: [ "compile" ]
 
   script: "mvn clean install -D=skipTests"
 
