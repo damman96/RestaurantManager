@@ -1,6 +1,18 @@
 version: 2.1
 
 jobs:
+  
+  compile:
+
+    docker:
+      - image: circleci/openjdk:11-jdk
+
+    steps:
+      - checkout
+      - run:
+          name: Compile with Maven
+          command: mvn compile
+  
   sonarcloud-analysis:
     docker:
       - image: circleci/openjdk:11-jdk
@@ -18,7 +30,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build with Maven on Ubuntu
+          name: Build with Maven
           command: mvn clean install -D=skipTests
 
   test-unit:
@@ -73,10 +85,16 @@ jobs:
 workflows:
   build_and_test:
     jobs:
+      - compile
+
       - sonarcloud-analysis:
           context: SonarCloud
+          requires:
+            - compile
 
-      - build
+      - build:
+          requires:
+            - compile
 
       - test-unit:
           requires:
