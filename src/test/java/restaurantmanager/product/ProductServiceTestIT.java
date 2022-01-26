@@ -8,6 +8,7 @@ import static restaurantmanager.utils.ProductFixture.createModifyProductDto;
 import static restaurantmanager.utils.ProductFixture.createModifyProductDtoWithNulls;
 import static restaurantmanager.utils.ProductFixture.createProductEntity;
 import static restaurantmanager.utils.ProductFixture.createProductEntityWithNulls;
+import static restaurantmanager.utils.RandomUtilsFixture.createRandomString;
 
 import java.util.List;
 import java.util.Random;
@@ -23,6 +24,9 @@ import restaurantmanager.NotFoundException;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ProductServiceTestIT {
+	
+	private static final String CATEGORY = createRandomString();
+	private static final String PRODUCT_TYPE = createRandomString();
 	
 	@Autowired
 	private ProductDao productDao;
@@ -47,9 +51,9 @@ class ProductServiceTestIT {
 	@Test
 	void getAllProducts_Should_ReturnResultList_When_EntitiesArePresentInDb() {
 		// given
-		final var productsToAdd = List.of(createProductEntity(1L, "testType"),
-										  createProductEntity(2L, "testType"),
-										  createProductEntity(3L, "testType"));
+		final var productsToAdd = List.of(createProductEntity(1L, PRODUCT_TYPE),
+										  createProductEntity(2L, PRODUCT_TYPE),
+										  createProductEntity(3L, PRODUCT_TYPE));
 		this.productDao.saveAll(productsToAdd);
 		
 		// when
@@ -71,15 +75,13 @@ class ProductServiceTestIT {
 	@Test
 	void getAllProductsByCategory_Should_ReturnResultList_When_EntitiesArePresentInDb() {
 		// given
-		final var category = "testCategory";
-		final var productType = "testType";
-		final var productsToAdd = List.of(createProductEntity(1L, category, productType),
-										  createProductEntity(2L, category, productType),
-										  createProductEntity(3L, category, productType));
+		final var productsToAdd = List.of(createProductEntity(1L, CATEGORY, PRODUCT_TYPE),
+										  createProductEntity(2L, CATEGORY, PRODUCT_TYPE),
+										  createProductEntity(3L, CATEGORY, PRODUCT_TYPE));
 		this.productDao.saveAll(productsToAdd);
 		
 		// when
-		final var result = this.productService.getAllProductsByCategory(category);
+		final var result = this.productService.getAllProductsByCategory(CATEGORY);
 		
 		// then
 		assertEquals(productsToAdd, result);
@@ -97,14 +99,13 @@ class ProductServiceTestIT {
 	@Test
 	void getAllProductsByProductType_Should_ReturnResultList_When_EntitiesArePresentInDb() {
 		// given
-		final var productType = "testType";
-		final var productsToAdd = List.of(createProductEntity(1L, productType),
-										  createProductEntity(2L, productType),
-										  createProductEntity(3L, productType));
+		final var productsToAdd = List.of(createProductEntity(1L, PRODUCT_TYPE),
+										  createProductEntity(2L, PRODUCT_TYPE),
+										  createProductEntity(3L, PRODUCT_TYPE));
 		this.productDao.saveAll(productsToAdd);
 		
 		// when
-		final var result = this.productService.getAllProductsByProductType(productType);
+		final var result = this.productService.getAllProductsByProductType(PRODUCT_TYPE);
 		
 		// then
 		assertEquals(productsToAdd, result);
@@ -113,7 +114,7 @@ class ProductServiceTestIT {
 	@Test
 	void getProductById_Should_ReturnResult_When_EntityExists() {
 		// given
-		final var product = createProductEntity(1L, "productType");
+		final var product = createProductEntity(1L, PRODUCT_TYPE);
 		this.productDao.save(product);
 		
 		// when
@@ -152,7 +153,7 @@ class ProductServiceTestIT {
 	@Test
 	void updateProduct_Should_UpdateProduct() {
 		// given
-		final var existingProduct = createProductEntity(1L, "testType");
+		final var existingProduct = createProductEntity(1L, PRODUCT_TYPE);
 		this.productDao.save(existingProduct);
 		
 		final var modifyProductDto = createModifyProductDto();
