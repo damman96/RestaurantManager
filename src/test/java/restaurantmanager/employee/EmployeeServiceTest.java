@@ -27,7 +27,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import restaurantmanager.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
-public class EmployeeServiceTest {
+class EmployeeServiceTest {
 	
 	private final EmployeeDao employeeDao = Mockito.mock(EmployeeDao.class);
 	

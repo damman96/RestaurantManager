@@ -27,7 +27,7 @@ import restaurantmanager.NotFoundException;
 import restaurantmanager.utils.BoardFixture;
 
 @ExtendWith(MockitoExtension.class)
-public class BoardServiceTest {
+class BoardServiceTest {
 	
 	private final BoardDao boardDao = Mockito.mock(BoardDao.class);
 	
