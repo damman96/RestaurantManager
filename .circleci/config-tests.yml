@@ -1,0 +1,109 @@
+version: 2.1
+
+jobs:
+  
+  compile:
+
+    docker:
+      - image: circleci/openjdk:11-jdk
+
+    steps:
+      - checkout
+      - run:
+          name: Compile with Maven
+          command: mvn compile
+  
+  sonarcloud-analysis:
+    docker:
+      - image: circleci/openjdk:11-jdk
+    steps:
+      - checkout
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar -Dsonar.projectKey=damman96_RestaurantManager
+
+  build:
+
+    docker:
+      - image: circleci/openjdk:11-jdk
+
+    steps:
+      - checkout
+      - run:
+          name: Build with Maven
+          command: mvn clean install -D=skipTests
+
+  test-unit:
+
+    docker:
+      - image: circleci/openjdk:11-jdk
+
+    steps:
+      - checkout
+      - run:
+          name: Unit tests with Maven
+          command: mvn test '-Dtest=!*TestIT*'
+
+  test-IT:
+
+    docker:
+      - image: circleci/openjdk:11-jdk
+        environment:
+          JDBC_DATABASE_URL: jdbc:postgresql://localhost:5432/restaurant
+          JDBC_DATABASE_USERNAMEL: postgres
+          JDBC_DATABASE_PASSWORD: admin
+
+      - image: cimg/postgres:14.1
+        environment:
+          POSTGRES_DB: restaurant
+
+    steps:
+      - checkout
+      - run:
+          name: Integration tests with Maven
+          command: mvn test '-Dtest=*TestIT*'
+
+  test-all:
+
+    docker:
+      - image: circleci/openjdk:11-jdk
+        environment:
+          JDBC_DATABASE_URL: jdbc:postgresql://localhost:5432/restaurant
+          JDBC_DATABASE_USERNAMEL: postgres
+          JDBC_DATABASE_PASSWORD: admin
+
+      - image: cimg/postgres:14.1
+        environment:
+          POSTGRES_DB: restaurant
+
+    steps:
+      - checkout
+      - run:
+          name: All tests with Maven
+          command: mvn test '-Dtest=*Test*'
+
+workflows:
+  build_and_test:
+    jobs:
+      - compile
+
+      - sonarcloud-analysis:
+          context: SonarCloud
+          requires:
+            - compile
+
+      - build:
+          requires:
+            - compile
+
+      - test-unit:
+          requires:
+            - build
+
+      - test-IT:
+          requires:
+            - test-unit
+
+      - test-all:
+          requires:
+            - test-IT
