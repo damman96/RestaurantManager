@@ -9,7 +9,6 @@ on:
 jobs:
 
   #COMPILE
-
   compile:
     name: Compile with Maven
 
