@@ -1,4 +1,4 @@
-name: Workflow for tests
+name: Workflow_for_tests
 
 on:
   push:
