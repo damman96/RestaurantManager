@@ -72,7 +72,7 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -D=skipTests
 
-  test-unit:
+  unit-tests:
     name: Unit tests with Maven
 
     needs: [ compile, build ]
@@ -93,12 +93,12 @@ jobs:
       - name: Unit tests with Maven
         run: mvn test '-Dtest=!*TestIT*'
 
-  test-IT:
+  IT-tests:
     name: Integration tests with Maven
 
     runs-on: ubuntu-latest
 
-    needs: [ compile, build, test-unit ]
+    needs: [ compile, build, unit-tests ]
 
     services:
       postgres:
@@ -129,12 +129,12 @@ jobs:
       - name: Integration tests with Maven
         run: mvn test '-Dtest=*TestIT*'
 
-  test-all:
+  all-tests:
     name: All tests with Maven
 
     runs-on: ubuntu-latest
 
-    needs: [ compile, build, test-unit, test-IT ]
+    needs: [ compile, build, unit-tests, IT-tests ]
 
     services:
       postgres:

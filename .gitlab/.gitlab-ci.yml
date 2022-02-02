@@ -29,24 +29,24 @@ build-job:
 
   script: "mvn clean install -D=skipTests"
 
-test-job-unit:
+unit-tests-job:
   stage: test
   needs: [ "build-job" ]
 
   script: "mvn test '-Dtest=!*TestIT*'"
 
-test-job-IT:
+IT-tests-job:
   stage: test
-  needs: [ "build-job", "test-job-unit" ]
+  needs: [ "build-job", "unit-tests-job" ]
 
   services:
     - postgres:latest
 
   script: "mvn test '-Dtest=*TestIT*' '-Dspring.profiles.active=gitlab'"
 
-test-job-all:
+all-tests-job:
   stage: test
-  needs: [ "build-job", "test-job-unit", "test-job-IT" ]
+  needs: [ "build-job", "unit-tests-job", "IT-tests-job" ]
 
   services:
     - postgres:latest
