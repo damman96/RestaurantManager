@@ -1,9 +1,7 @@
 version: 2.1
 
 jobs:
-  
   compile:
-
     docker:
       - image: circleci/openjdk:11-jdk
 
@@ -23,7 +21,6 @@ jobs:
           command: mvn verify sonar:sonar -Dsonar.projectKey=damman96_RestaurantManager
 
   build:
-
     docker:
       - image: circleci/openjdk:11-jdk
 
@@ -33,8 +30,7 @@ jobs:
           name: Build with Maven
           command: mvn clean install -D=skipTests
 
-  test-unit:
-
+  unit-tests:
     docker:
       - image: circleci/openjdk:11-jdk
 
@@ -44,8 +40,7 @@ jobs:
           name: Unit tests with Maven
           command: mvn test '-Dtest=!*TestIT*'
 
-  test-IT:
-
+  IT-tests:
     docker:
       - image: circleci/openjdk:11-jdk
         environment:
@@ -63,8 +58,7 @@ jobs:
           name: Integration tests with Maven
           command: mvn test '-Dtest=*TestIT*'
 
-  test-all:
-
+  all-tests:
     docker:
       - image: circleci/openjdk:11-jdk
         environment:
@@ -86,24 +80,19 @@ workflows:
   build_and_test:
     jobs:
       - compile
-
       - sonarcloud-analysis:
           context: SonarCloud
           requires:
             - compile
-
       - build:
           requires:
             - compile
-
-      - test-unit:
+      - unit-tests:
           requires:
             - build
-
-      - test-IT:
+      - IT-tests:
           requires:
-            - test-unit
-
-      - test-all:
+            - unit-tests
+      - all-tests:
           requires:
-            - test-IT
+            - IT-tests

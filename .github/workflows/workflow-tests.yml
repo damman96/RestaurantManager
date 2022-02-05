@@ -1,4 +1,4 @@
-name: Workflow for tests
+name: Workflow_for_tests
 
 on:
   push:
@@ -7,8 +7,6 @@ on:
       - master
 
 jobs:
-
-  #COMPILE
   compile:
     name: Compile with Maven
 
@@ -28,7 +26,6 @@ jobs:
       - name: Compile with Maven
         run: mvn compile
 
-  #SONARCLOUD ANALYSIS
   sonarcloud-analysis:
     name: SonarCloud Analysis
 
@@ -53,7 +50,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=damman96_RestaurantManager
 
-  #BUILD
   build:
     name: Build with Maven
 
@@ -75,8 +71,7 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -D=skipTests
 
-  # UNIT TESTS
-  test-unit:
+  unit-tests:
     name: Unit tests with Maven
 
     needs: [ compile, build ]
@@ -97,13 +92,12 @@ jobs:
       - name: Unit tests with Maven
         run: mvn test '-Dtest=!*TestIT*'
 
-  # IT TESTS
-  test-IT:
+  IT-tests:
     name: Integration tests with Maven
 
     runs-on: ubuntu-latest
 
-    needs: [ compile, build, test-unit ]
+    needs: [ compile, build, unit-tests ]
 
     services:
       postgres:
@@ -134,13 +128,12 @@ jobs:
       - name: Integration tests with Maven
         run: mvn test '-Dtest=*TestIT*'
 
-  #ALL  TESTS
-  test-all:
+  all-tests:
     name: All tests with Maven
 
     runs-on: ubuntu-latest
 
-    needs: [ compile, build, test-unit, test-IT ]
+    needs: [ compile, build, unit-tests, IT-tests ]
 
     services:
       postgres:
